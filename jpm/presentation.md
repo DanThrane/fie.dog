@@ -26,7 +26,7 @@ MicroService Architectures (MSA) are composed of _services_
 
 .p85.center[![](services.svg)]
 
-Each service is _autonomous_ and _reuseable_
+Each service is _autonomous_ and _reusable_
 ]
 
 --
@@ -40,24 +40,18 @@ Communication via message passing.
 ???
 
 Microservices are a paradigm where every component is a service. These
-individual services are entirely autonomous and reuseable. Microservices
+individual services are entirely autonomous and reusable. Microservices
 applications are then composed of these (black-box) services. Collaboration of
 these services then happen through message passing.
 
 For example, we can have two services, A and B. These services can collaborate
-by sending messages to eachother. The message passing can be done through any
+by sending messages to each other. The message passing can be done through any
 medium or using any protocol, that is somewhat irrelevant for microservices.
 
 Service A could, for example, depend on service B and send a single request to
 service B.
 
-TODO We should also focus a bit more on what we mean by autonomous and
-reuseable.
-
-TODO Do we, perhaps, focus on some key differences with monoliths?
-
 ---
-
 count: false
 
 .left-column[
@@ -69,7 +63,7 @@ MicroService Architectures (MSA) are composed of _services_
 
 .p85.center[![](services.svg)]
 
-Each service is _autonomous_ and _reuseable_
+Each service is _autonomous_ and _reusable_
 ]
 
 .right-column[
@@ -182,19 +176,12 @@ to develop a system which takes the differences into account.
 ]
 
 .right-column[
-This work includes(*):
-
-  - Module and configuration system for Jolie
-  - Simple package manager
-
-It uses the _Jolie_ language:
+In this work we use the _Jolie_ language:
 
   - Service-oriented language
   - Interpreted language - Built on top of the JVM
   - Protocol agnostic
 
-
-.footnote[(*): A minimal core product (i.e., what we show here) is done]
 ]
 
 ???
@@ -231,8 +218,6 @@ main {
 ]
 
 ---
-
-count: false
 
 .left-column[
 ## MSA
@@ -282,8 +267,6 @@ configuration.
 
 ---
 
-count: false
-
 .left-column[
 ## MSA
 ## Packages
@@ -324,8 +307,6 @@ a charge request to the PaymentProcessor service.
 
 
 ---
-
-count: false
 
 .left-column[
 ## MSA
@@ -433,6 +414,22 @@ But this makes it hard to include foreign programs needed by embedding.
 
 ---
 
+.left-column[
+## In this Work
+]
+
+.right-column[
+This work includes(*):
+
+  - Module and configuration system for Jolie
+  - Simple package manager
+
+
+.footnote[(*): A minimal core product (i.e., what we show here) is done]
+]
+
+---
+
 class: inverse, middle, center
 
 ## Module System + Configuration
@@ -493,8 +490,7 @@ does)
 ]
 
 .right-column[
-Native configuration of Jolie modules - Eliminates the need for configuration
-via code (old convention)
+Native configuration of Jolie modules
 
 ```jolie
 profile "hello-world" configures "my-module" {
@@ -511,14 +507,22 @@ profile "hello-world" configures "my-module" {
     myParameter.subProperty = "hello"
 }
 ```
-
-Provides configuration of most native Jolie constructs:
-
-- Input and output ports
-  + Including embedding of modules
-- Parameters
-- Interface rebinding
 ]
+
+???
+
+On top of the module system, we have created a configuration system. The
+configuration system can configure the most common constructs that might
+require configuration, for example, the ports. Additionally we allow for
+configuration parameters to be passed to a module.
+
+What we see on this slide is a single configuration unit. Each unit configures
+exactly one module (which we state by the configures part). Each unit also
+has a name, a unit is uniquely represented by both a name and module, this
+way different modules could share the same name. This turned out to be
+rather useful since profiles would otherwise have to defensively named using
+some prefixes (Cut this last part? TODO)
+
 
 ---
 
@@ -540,10 +544,10 @@ include "calculator.iol" from "calculator"
 inputPort Self {
     Location: "socket://localhost:12345"
     Protocol: sodep
-    Aggregates: Calculator
+*   Aggregates: Calculator
 }
 
-outputPort Calculator {
+*outputPort Calculator {
     Location: "socket://calc.example.com:12345"
     Protocol: jsonrpc
     Interfaces: ICalculator
@@ -555,6 +559,23 @@ A proxy service, proxying calls directly to a `Calculator` service
 </small>
 
 ]
+
+???
+
+The configuration system also allows for "interface rebinding". Before we can
+jump right into this, we need to understand why this was needed.
+
+The aggregation feature of Jolie allows for the creation of proxy-like
+services. While the courier feature more control of the operation forwarding.
+
+On this slide I added a very small illustration of how this looks. This is,
+   pretty much (not quite executable, but this is all there is for the proxy
+           part), a service which proxies calls to a calculator service. The
+   target service is defined in the output port, while the proxying is defined
+   in the input port.
+
+It is important to note that the Jolie engine requires the interface to be
+known...
 
 ---
 
@@ -674,13 +695,6 @@ Probably don't need that many details, this is essentially just NPM.
 
 ---
 
-class: center, middle
-
-# VERSION SELECTION HERE?
-
-
----
-
 .left-column[
 ## Packaging of Modules
 ## Jolie Package Manager
@@ -689,14 +703,13 @@ class: center, middle
 .right-column[
 Jolie Package Manager (JPM) is a tool for managing Jolie Packages.
 
-Basic feature set:
+Basic feature set, including:
 
   - Installing, upgrading, and publishing of packages
   - Lockfiles
   - Life-time hooks for packages
   - Running services (off-loads module knowledge to JPM)
   - Various utilities for developing packages
-  - ...
 ]
 
 ---
@@ -714,11 +727,21 @@ A small demonstration...
 ---
 
 .left-column[
-## Conclusions
+## Summary
 ]
 
 .right-column[
-TODO
+
+- MSAs and bindings to dependencies (internal and external)
+- Module and Configuration system
+  + Internal to the language
+  + Modules describe a single "program"
+  + Configuration of ports, parameters, and interface rebinding
+  + Inheritance of profiles
+- Simple package management tool
+  + External to the language
+  + Expands modules for more features
+
 ]
 
 ---

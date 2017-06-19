@@ -687,26 +687,22 @@ Configuration profiles are allowed to inherit values from a single other
 profile.
 
 ```jolie
-profile "default" configures "module" {
-    aProperty = 42,
-    debugFlag = false
+profile "default" configures "greeter" {
+    greeting = "Hello"
 }
 
-profile "hosted" configures "module" extends "default" {
-    inputPort Module {
-        Location: "socket://localhost:12345" },
-    outputPort Dependency {
-        Location: "socket://dep.example.com:12000" }
+profile "hosted" configures "greeter" extends "default" {
+    inputPort Greeter {
+        Location: "socket://localhost:22000"
+        Protocol: http
+    }
 }
 
-profile "embedded" configures "module" extends "default" {
-    inputPort Module { Location: "local" },
-    outputPort Dependency
-        embeds "dependency" with "embedded"
-}
-
-profile "debug" configures "module" extends "embedded" {
-    debugFlag = true
+profile "embedded" configures "greeter" extends "default" {
+    inputPort Greeter {
+        Location: "local"
+        Protocol: sodep
+    }
 }
 ```
 

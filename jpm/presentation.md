@@ -2,7 +2,7 @@ class: center, middle, inverse
 
 # Packaging Microservices
 
-Dan Sebastian Thrane [&lt;dthrane@gmail.com&gt;](mailto:dthrane@gmail.com)
+__Dan Sebastian Thrane [&lt;dthrane@gmail.com&gt;](mailto:dthrane@gmail.com)__
 
 Fabrizio Montesi [&lt;fmontesi@imada.sdu.dk&gt;](mailto:fmontesi@imada.sdu.dk)
 
@@ -27,11 +27,7 @@ MicroService Architectures (MSA) are composed of _services_
 .p85.center[![](services.svg)]
 
 Each service is _autonomous_ and _reusable_
-]
 
---
-
-.right-column[
 Communication via message passing.
 
 .p85.center[![](services_comm.svg)]
@@ -64,9 +60,7 @@ MicroService Architectures (MSA) are composed of _services_
 .p85.center[![](services.svg)]
 
 Each service is _autonomous_ and _reusable_
-]
 
-.right-column[
 Communication via message passing.
 
 .p85.center[![](services_comm_b.svg)]
@@ -102,6 +96,12 @@ __Package Manager__
 
 ???
 
+Keywords:
+
+- code reuse
+- other paradigms -> software packages
+- ease of use -> package managers (what do they do)
+
 Code reuse is the primary focus of this work. Software packages deal directly
 with this issue, thus it is only natural that we turn to it for a solution.
 
@@ -134,6 +134,32 @@ managers).
 ]
 
 .right-column[
+
+__Package Manager Manifests__
+
+```toml
+[package]
+name = "my-cargo-crate"
+version = "1.2.3"
+authors = ["Dan Sebastian Thrane <dathr12@student.sdu.dk>"]
+
+[dependencies]
+log = "0.3.8"
+left-pad = "1.0.1"
+```
+
+<small>An example "crate" as used by Rust's build tool Cargo</small>
+
+]
+
+---
+
+.left-column[
+## MSA
+## Packages
+]
+
+.right-column[
 But code-inclusion doesn't capture the _essence of MSAs_
 ]
 
@@ -152,6 +178,12 @@ the same host as A
 ]
 
 ???
+
+Keywords:
+
+ - Capture MSAs (code inclusion)
+ - Dependencies are black-boxes + message passing
+ - If traditional -> ad-hoc conventions
 
 But the approach of traditional package managers doesn't really apply here. If
 we take the example from before, we have that service A depends on service B.
@@ -180,8 +212,12 @@ In this work we use the _Jolie_ language:
 
   - Service-oriented language
   - Interpreted language - Built on top of the JVM
-  - Protocol agnostic
+  - Message passing is handled by the language
+    + Agnostic wrt. protocol and communication medium
 
+.center[![](protocolindependence.png)]
+
+.footnote[Figure source: http://jolie-lang.org/imgs/protocolindependence.png]
 ]
 
 ???
@@ -346,6 +382,41 @@ will become more relevant later.
 ## MSA
 ## Packages
 ## Jolie
+]
+
+.right-column[
+```jolie
+include "paymentprocessor.iol"
+*include "config.iol"
+
+inputPort Shop { /* ... */ }
+outputPort Warehouse { /* ... */ }
+outputPort PaymentProcessor {
+*   Location: PAYMENT_PROCESSOR_LOCATION
+*   Protocol: PAYMENT_PROCESSOR_PROTOCOL
+    Interfaces: IPaymentProcessor }
+
+main {
+    checkout(order)(response) {
+        charge@PaymentProcessor( /* ... */ )()
+    }
+}
+```
+
+Configuration _used_ to be done through code-inclusion
+]
+
+???
+
+The interfaces of a service is typically included through some .iol file. This
+will become more relevant later.
+
+---
+
+.left-column[
+## MSA
+## Packages
+## Jolie
 ## Embedding
 ]
 
@@ -441,46 +512,25 @@ class: inverse, middle, center
 ]
 
 .right-column[
-- Implemented as part of the core language
+- Part of the core language
 - Describes a single Jolie program
     + Via a _name_, _source-code root_, and _entry-point_
-    + Interpreter knows module of a program
-    <!--+ Allows the interpreter to work, natively, with "foreign programs"-->
+    + Interpreter knows all available modules
 - Supporting language features
-    <!--+ Support for embedding modules-->
     + New module include primitive:<br /> `include "foo.iol" from "bar"`
-- Leaves a lot of problems unsolved (purposefully)
+- Minimal solution
 
 .center.p85[![](modules.svg)]
 ]
 
 ???
 
-Jolie modules describe a single unit of TODO. It is implemented as part of the
-core language. A module itself is relatively simple abstraction, it is
-described by just a few attributes.
+Keywords:
 
-TODO Back in the introduction slides we need to define a "program". How can
-a program consist of multiple programs? Because that is what this slide says.
-Perhaps the point we're really trying to make is that a program can now more
-clearly declare that they are working with foreign "programs"
-
-We really don't have a whole lot to say about Jolie modules. They are
-essentially as simple as possible, which plays along with the somewhat minimal
-solution we have so far.
-
-A module is described as a name, a module root (for source code), and
-optionally and entry-point (this means we need to explain embedding!)
-
-Along with this we have new primitive for including.
-
-The last few details, i.e., the CLI stuff seems mostly irrelevant here.
-
-We should talk about how this encapsulates a Jolie program in its entirety.
-This, importantly, includes stuff like the "include" and "lib" directory.
-It also gives us an abstraction we can build upon (as the configuration system
-does)
-
+ - Core language
+ - Single program -> Allows clean separation
+ - Entry-point and embedding
+ - Minimal solution
 
 ---
 
@@ -491,6 +541,8 @@ does)
 
 .right-column[
 Native configuration of Jolie modules
+
+_Extracts_ configuration code _out_ of the program code
 
 ```jolie
 profile "hello-world" configures "my-module" {
@@ -510,6 +562,13 @@ profile "hello-world" configures "my-module" {
 ]
 
 ???
+
+Keywords:
+
+ - Config on top of module
+ - Extract config bits out
+ - Profiles and modules
+ - Ports and parameters
 
 On top of the module system, we have created a configuration system. The
 configuration system can configure the most common constructs that might
@@ -755,90 +814,6 @@ count: false
 ]
 
 .right-column[
-```terminal
-dan@host:/ $ jpm init
-Package name
-------------
-> my-package
-
-( ... Remaining cut for brevity ... )
-
-dan@host:/ $ cd my-package
-
-dan@host:/my-package $ ls
-package.json
-
-dan@host:/my-package $ cat package.json | json
-{
-  "private": false,
-  "name": "my-package",
-  "description": "description",
-  "version": "0.1.0",
-  "authors": "Dan"
-}
-```
+<asciinema-player src="/asciicast-125361.json" cols="86" rows="21">
+</asciinema-player>
 ]
-
----
-
-count: false
-
-.left-column[
-## Packaging of Modules
-## Jolie Package Manager
-## Demo
-]
-
-.right-column[
-```terminal
-dan@host:/my-package $ jpm register
-Username
---------
-> dan
-Password:
-Password (Repeat):
-
-dan@host:/my-package $ jpm whoami
-dan
-
-dan@host:/my-package $ jpm publish
-```
-]
-
----
-
-count: false
-
-.left-column[
-## Packaging of Modules
-## Jolie Package Manager
-## Demo
-]
-
-.right-column[
-```terminal
-dan@host:/client $ jpm install
-Downloading          my-package@0.1.0
-Completed            my-package@0.1.0
-
-dan@host:/client $ tree .
-.
-|-- jpm_lock.json
-|-- jpm_packages
-|   `-- my-package
-|       |-- interface.iol
-|       |-- main.ol
-|       `-- package.json
-`-- package.json
-
-2 directories, 5 files
-
-dan@host:/client $ jpm start
-Service running...
-
-dan@host:/client $ jpm start --conf my-profile config.col
-Service running...
-```
-]
-
-

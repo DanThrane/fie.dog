@@ -814,6 +814,6 @@ count: false
 ]
 
 .right-column[
-<asciinema-player src="/asciicast-125361.json" cols="86" rows="21">
+<asciinema-player src="asciicast-125361.json" cols="86" rows="21">
 </asciinema-player>
 ]

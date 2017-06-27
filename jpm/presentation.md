@@ -1,19 +1,21 @@
-class: center, middle, inverse
+class: center, middle
 
-# Packaging Microservices
+# Building a Package Manager for Jolie
 
-__Dan Sebastian Thrane [&lt;dthrane@gmail.com&gt;](mailto:dthrane@gmail.com)__
+Dan Sebastian Thrane
 
-Fabrizio Montesi [&lt;fmontesi@imada.sdu.dk&gt;](mailto:fmontesi@imada.sdu.dk)
+<small>Supervisor: Fabrizio Montesi</small>
 
 .right.logo[
-![SDU Logo](sdu_logo_inv.svg)
+![SDU Logo](sdu_logo.svg)
 ]
 
 ???
 
-Mention up here roughly what we will be doing, that way we can jump straight
-into talking about microservices.
+Keywords:
+
+- I am...
+- Packaging of microservices
 
 ---
 
@@ -34,6 +36,12 @@ Communication via message passing.
 ]
 
 ???
+
+Keywords:
+
+- Microservices are components
+- Message-passing
+- Example
 
 Microservices are a paradigm where every component is a service. These
 individual services are entirely autonomous and reusable. Microservices
@@ -101,6 +109,7 @@ Keywords:
 - code reuse
 - other paradigms -> software packages
 - ease of use -> package managers (what do they do)
+- examples
 
 Code reuse is the primary focus of this work. Software packages deal directly
 with this issue, thus it is only natural that we turn to it for a solution.
@@ -501,7 +510,7 @@ This work includes(*):
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 ## Module System + Configuration
 
@@ -560,6 +569,10 @@ profile "hello-world" configures "my-module" {
 }
 ```
 ]
+
+--
+
+.right-column[Configuration is _statically checked_ by the engine]
 
 ???
 
@@ -710,7 +723,7 @@ profile "embedded" configures "greeter" extends "default" {
 
 ---
 
-class: inverse, middle, center
+class: middle, center
 
 ## Package System + Manager
 

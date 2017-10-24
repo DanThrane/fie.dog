@@ -1,10 +1,8 @@
 class: center, middle
 
-# Building a Package Manager for Jolie
+# Packaging Microservices
 
 Dan Sebastian Thrane
-
-<small>Supervisor: Fabrizio Montesi</small>
 
 .right.logo[
 ![SDU Logo](sdu_logo.svg)

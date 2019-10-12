@@ -1,28 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Fie.dog</title>
     <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
         .content {
             display: flex;
             width: 100%;
-            height: 95vh;
+            height: 94vh;
             justify-items: center;
             justify-content: center;
             align-items: center;
         }
 
-        .content img, video {
+        .content img,
+        video {
             max-height: 80vh;
+        }
+
+        .media-btn {
+            padding: 16px;
+            width: 100%;
+            cursor: pointer;
+            border: 1px solid seagreen;
+            display: flex;
+            justify-content: center;
+            color: seagreen;
+            user-select: none;
+        }
+
+        .media-btn:hover {
+            border: 3px solid seagreen;
+        }
+
+        .button-container {
+            display: flex;
+            justify-items: center;
+        }
+
+        .button-container div {
+            margin-left: 16px;
         }
     </style>
 </head>
+
 <body>
     <div class="content">
-        <video src="fie.mp4" autoplay controls></video>
     </div>
+
+    <div class="button-container">
+        <div id="next-btn" class="media-btn">Next</div>
+        <div id="random-btn" class="media-btn">Random</div>
+    </div>
+    <script src="album.js"></script>
 </body>
+
 </html>

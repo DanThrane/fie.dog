@@ -7,6 +7,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Fie.dog</title>
     <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --button-color: seagreen;
+                --main-bg-color: white;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --button-color: blue;
+                --main-bg-color: black;
+            }
+        }
+
+        body {
+            background-color: var(--main-bg-color, white);
+        }
+
+
         * {
             font-family: Arial, Helvetica, sans-serif;
         }
@@ -29,15 +48,15 @@
             padding: 16px;
             width: 100%;
             cursor: pointer;
-            border: 1px solid seagreen;
+            border: 1px solid var(--button-color, seagreen);
             display: flex;
             justify-content: center;
-            color: seagreen;
+            color: var(--button-color, seagreen);
             user-select: none;
         }
 
         .media-btn:hover {
-            border: 3px solid seagreen;
+            border: 3px solid var(--button-color, seagreen);
         }
 
         .button-container {

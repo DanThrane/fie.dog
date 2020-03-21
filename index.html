@@ -33,7 +33,7 @@
         .content {
             display: flex;
             width: 100%;
-            height: 94vh;
+            flex-grow: 1;
             justify-items: center;
             justify-content: center;
             align-items: center;
@@ -42,6 +42,7 @@
         .content img,
         video {
             max-height: 80vh;
+            max-width: 80vw;
         }
 
         .media-btn {
@@ -56,10 +57,11 @@
         }
 
         .media-btn:hover {
-            border: 3px solid var(--button-color, seagreen);
+            transform: scale3d(1.01, 1.01, 1.01);
         }
 
         .button-container {
+            margin-top: 20px;
             display: flex;
             justify-items: center;
         }
@@ -67,16 +69,37 @@
         .button-container div {
             margin-left: 16px;
         }
+
+        header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        header > a {
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+        }
+
+        body {
+            display: flex;
+            height: calc(100vh - 30px);
+            flex-direction: column;
+        }
     </style>
 </head>
 
 <body>
+    <header>
+        <h1>Fie.dog 🐶</h1>
+    </header>
+
     <div class="content">
     </div>
 
     <div class="button-container">
-        <div id="next-btn" class="media-btn">Next</div>
-        <div id="random-btn" class="media-btn">Random</div>
+        <div id="next-btn" class="media-btn">Next ⏭️</div>
+        <div id="random-btn" class="media-btn">Random 🔀</div>
     </div>
     <script src="album.js"></script>
 </body>

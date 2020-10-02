@@ -8,6 +8,10 @@
     <title>Fie.dog</title>
     <style>
         @media (prefers-color-scheme: light) {
+            header {
+                color: black;
+            }
+
             :root {
                 --button-color: seagreen;
                 --main-bg-color: white;
@@ -15,9 +19,13 @@
         }
 
         @media (prefers-color-scheme: dark) {
+            header {
+                color: white;
+            }
+
             :root {
-                --button-color: blue;
-                --main-bg-color: black;
+                --button-color: seagreen;
+                --main-bg-color: #333;
             }
         }
 
@@ -58,6 +66,10 @@
 
         .media-btn:hover {
             transform: scale3d(1.01, 1.01, 1.01);
+        }
+
+        header {
+            margin-left: 15px;
         }
 
         .button-container {

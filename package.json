@@ -1,0 +1,31 @@
+{
+  "name": "fie.dog",
+  "version": "1.0.0",
+  "description": "A website about an dog called Fie.",
+  "main": "album.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "prestart": "tsc -p .",
+    "start": "http-server -p 8080 ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ezbob/fie.dog.git"
+  },
+  "keywords": [
+    "dog",
+    "website"
+  ],
+  "author": "Fie's friends",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ezbob/fie.dog/issues"
+  },
+  "homepage": "https://github.com/Ezbob/fie.dog#readme",
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}

@@ -1,4 +1,4 @@
-function hasExtension(name, extension) {
+function hasExtension(name: string, extension: string) {
     return name.indexOf(extension, name.length - extension.length) !== -1;
 }
 
@@ -35,17 +35,25 @@ fetch("/media/rotation.json").then(it => it.json()).then(rotation => {
             }
         }
 
-        contentElement.innerHTML = "";
-        contentElement.appendChild(elementCreated);
+        if (contentElement && elementCreated) {
+            contentElement.innerHTML = "";
+            contentElement.appendChild(elementCreated);
+        } else {
+            throw new Error("Could not render. Fie is disappointed :(")
+        }
     }
 
-    nextButton.addEventListener("click", e => {
-        goToNext();
-    });
+    if (nextButton) {
+        nextButton.addEventListener("click", e => {
+            goToNext();
+        });
+    }
 
-    randomButton.addEventListener("click", e => {
-        goToRandom();
-    });
+    if (randomButton) {
+        randomButton.addEventListener("click", e => {
+            goToRandom();
+        });
+    }
 
     render();
 });

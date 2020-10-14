@@ -1,4 +1,10 @@
-function hasExtension(name: string, extension: string) {
+//@ts-check
+
+/**
+ * @param {string} name
+ * @param {string} extension
+ */
+function hasExtension(name, extension) {
     return name.indexOf(extension, name.length - extension.length) !== -1;
 }
 

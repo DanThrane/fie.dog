@@ -5,7 +5,6 @@
   "main": "album.js",
   "scripts": {
     "build": "tsc -p .",
-    "prestart": "tsc -p .",
     "start": "http-server -p 8080 ./"
   },
   "repository": {

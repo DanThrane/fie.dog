@@ -11,6 +11,7 @@ function hasExtension(name, extension) {
 const contentElement = document.querySelector(".content");
 const nextButton = document.querySelector("#next-btn");
 const randomButton = document.querySelector("#random-btn");
+const slideshowButton = document.querySelector("#slideshow-btn");
 
 fetch("/media/rotation.json").then(it => it.json()).then(rotation => {
     let idx = 0;
@@ -35,6 +36,7 @@ fetch("/media/rotation.json").then(it => it.json()).then(rotation => {
                 elementCreated.src = nextElement;
                 elementCreated.controls = true;
                 elementCreated.controls = true;
+                elementCreated.autoplay = true;
             } else if (hasExtension(nextElement, "jpg")) {
                 elementCreated = document.createElement("img");
                 elementCreated.src = nextElement;
@@ -60,6 +62,31 @@ fetch("/media/rotation.json").then(it => it.json()).then(rotation => {
             goToRandom();
         });
     }
+
+    let slideshowTimer = 0;
+    if (slideshowButton) {
+        slideshowButton.addEventListener("click", e => {
+            document.body.requestFullscreen("hide");
+        });
+    }
+
+    document.body.addEventListener("fullscreenchange", e => {
+        if (document.fullscreenElement) {
+            document.body.classList.add("fullscreen");
+            slideshowTimer = setInterval(() => {
+                const currentVideo = document.querySelector("video");
+                if (!currentVideo || currentVideo.ended) {
+                    goToNext();
+                }
+            }, 5000);
+        } else {
+            document.body.classList.remove("fullscreen");
+            if (slideshowTimer) {
+                clearInterval(slideshowTimer);
+                slideshowTimer = 0;
+            }
+        }
+    });
 
     render();
 });
